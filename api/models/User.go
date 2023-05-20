@@ -18,7 +18,7 @@ type User struct {
 	Email     string    `gorm:"size:100;not null;unique" json:"email"`
 	Password  string    `gorm:"size:100;not null;" json:"password"`
 	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpadtedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
 func Hash(pass string) ([]byte, error) {
@@ -43,7 +43,7 @@ func (u *User) Prepare() {
 	u.Username = html.EscapeString(strings.TrimSpace(u.Username))
 	u.Email = html.EscapeString(strings.TrimSpace(u.Email))
 	u.CreatedAt = time.Now()
-	u.UpadtedAt = time.Now()
+	u.UpdatedAt = time.Now()
 }
 
 func (u *User) Validate(action string) error {
@@ -133,7 +133,7 @@ func (u *User) UpdateUser(db *gorm.DB, uid uint32) (*User, error) {
 			"password":  u.Password,
 			"username":  u.Username,
 			"email":     u.Email,
-			"update_at": time.Now(),
+			"updated_at": time.Now(),
 		},
 	)
 

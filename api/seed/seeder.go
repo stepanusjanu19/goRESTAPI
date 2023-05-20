@@ -31,13 +31,21 @@ var posts = []models.Post{
 	},
 }
 
+var itemgroup = []models.ItemGroup{
+	models.ItemGroup{
+		Item_Group_Name: "Baju & Sweater",
+	},
+	models.ItemGroup{
+		Item_Group_Name: "Makanan & Minuman",
+	},
+}
 func Load(db *gorm.DB) {
 
-	err := db.Debug().DropTableIfExists(&models.Post{}, &models.User{}).Error
+	err := db.Debug().DropTableIfExists(&models.Post{}, &models.User{}, &models.ItemGroup{}).Error
 	if err != nil {
 		log.Fatalf("cannot drop table: %v", err)
 	}
-	err = db.Debug().AutoMigrate(&models.User{}, &models.Post{}).Error
+	err = db.Debug().AutoMigrate(&models.User{}, &models.Post{}, &models.ItemGroup{}).Error
 	if err != nil {
 		log.Fatalf("cannot migrate table: %v", err)
 	}
@@ -57,6 +65,11 @@ func Load(db *gorm.DB) {
 		err = db.Debug().Model(&models.Post{}).Create(&posts[i]).Error
 		if err != nil {
 			log.Fatalf("cannot seed posts table: %v", err)
+		}
+
+		err = db.Debug().Model(&models.ItemGroup{}).Create(&itemgroup[i]).Error
+		if err != nil {
+			log.Fatalf("cannot seed item group table: %v", err)
 		}
 	}
 }
